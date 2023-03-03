@@ -115,4 +115,4 @@ def test(step):
 
 
 if __name__=='__main__':
-    train()
+    test(1)
