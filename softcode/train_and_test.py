@@ -6,8 +6,8 @@ import myutils
 
 data_dir = '/home/jiaming/atd12k_points'
 
-train_loader = get_loader('train', data_dir, 2, shuffle=True, num_workers=1)
-test_loader = get_loader('test', data_dir, 2, shuffle=False, num_workers=1)
+train_loader = get_loader('train', data_dir, 6, shuffle=True, num_workers=1)
+test_loader = get_loader('test', data_dir, 4, shuffle=False, num_workers=1)
 
 # class LaplacianPyramid(nn.Module):
 #     def __init__(self, max_level=5):
@@ -53,7 +53,6 @@ def train():
 
     for step in range(total_step):
         total_loss = 0
-        psnrs, ssims = myutils.init_meters()
 
         for ix,data in enumerate(train_loader):
 
