@@ -74,7 +74,7 @@ def train():
             total_loss+=loss
 
         print('epoch:  '+str(step)+'    avg loss   :'+str(total_loss.item()/len(train_loader)))
-        if (step+1)%3==0:
+        if (step+1)%2==0:
             test(step)
             torch.save(model,'./weights/'+'model_weight_'+str(step+1)+'.pth')
 
@@ -93,6 +93,7 @@ def test(step):
     model.eval()
     criteration.eval()
     psnrs, ssims = myutils.init_meters()
+    torch.save(model, './weights/' + 'model_weight_' + str(step + 1) + '.pth')
 
     with torch.no_grad():
         for ix, data in enumerate(test_loader):
@@ -107,7 +108,7 @@ def test(step):
             myutils.eval_metrics(img_out, tar, psnrs, ssims)
 
             if ix % 500 == 0:
-                print('data idx:' + ' lr  :' + str(lr) + '  epoch:  ' + str(ix) + '  /  ' + str(len(train_loader)))
+                print('data idx:' + ' lr  :' + str(lr) + '  epoch:  ' + str(ix) + '  /  ' + str(len(test_loader)))
                 print('loss value :', loss.item())
             # total_loss += loss
 
