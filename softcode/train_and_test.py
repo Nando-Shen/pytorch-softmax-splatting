@@ -11,6 +11,12 @@ data_dir = '/home/jiaming/atd12k_points'
 train_loader = get_loader('train', data_dir, 6, shuffle=True, num_workers=1)
 test_loader = get_loader('test', data_dir, 4, shuffle=False, num_workers=1)
 transform = T.ToPILImage()
+H = 192
+W = 384
+batch_size = 6
+shape = [batch_size, 3, H, W]
+model = Main_net(shape).cuda()
+
 
 # class LaplacianPyramid(nn.Module):
 #     def __init__(self, max_level=5):
@@ -42,16 +48,13 @@ transform = T.ToPILImage()
 #         return sum(self.criterion(a, b) for a, b in zip(x_lap, y_lap))
 
 def train():
-    batch_size = 6
     total_step = 100
     num_workers = 0
 
     lr = 1e-4
     criteration = LapLoss()
-    H = 192
-    W = 384
-    shape= [batch_size,3,H,W]
-    model = Main_net(shape).cuda().train(True)
+
+    model.train()
     optimizer = torch.optim.Adam(params=model.parameters(), lr=lr, weight_decay=4e-4)
 
     for step in range(total_step):
@@ -82,15 +85,11 @@ def train():
 
 
 def test(step):
-    batch_size = 4
     total_step = 100
     num_workers = 0
-    H = 192
-    W = 384
+
     lr = 1e-4
     criteration = LapLoss()
-    shape = [batch_size, 3, H, W]
-    model = Main_net(shape).cuda().train(True)
     # optimizer = torch.optim.Adam(params=model.parameters(), lr=lr, weight_decay=4e-4)
     model.eval()
     criteration.eval()
