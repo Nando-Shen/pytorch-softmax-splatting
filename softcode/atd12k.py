@@ -51,7 +51,7 @@ class ATD12k(Dataset):
 
     def __getitem__(self, index):
 
-        imgpaths = [self.data_list[index][0], self.data_list[index][1], self.data_list[index][2], self.data_list[index][3],  self.data_list[index][4],  self.data_list[index][5]]
+        imgpaths = [self.data_list[index][0], self.data_list[index][1], self.data_list[index][2]]
         # Load images
         images = [Image.open(pth) for pth in imgpaths]
         ## Select only relevant inputs
@@ -72,9 +72,10 @@ class ATD12k(Dataset):
 
             gt = images[2]
 
-            images = images[:2]
+            images1 = images[0]
+            images2 = images[1]
 
-            return images, gt
+            return images1, images2, gt
         else:
             T = self.transforms
             images = [T(img_.resize(size)) for img_ in images]
