@@ -2,7 +2,7 @@ from main_net import Main_net
 import torch
 from loss_f import LapLoss
 from atd12k import get_loader
-from softcode import myutils
+import myutils
 
 data_dir = '/home/jiaming/atd12k_points'
 
