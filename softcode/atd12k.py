@@ -81,10 +81,11 @@ class ATD12k(Dataset):
             images = [T(img_.resize(size)) for img_ in images]
 
             gt = images[2]
-            images = images[:2]
+            images1 = images[0]
+            images2 = images[1]
             imgpath = self.data_list[index][3]
 
-            return images, gt, imgpath
+            return images1,images2, gt, imgpath
 
     def __len__(self):
         if self.training:
