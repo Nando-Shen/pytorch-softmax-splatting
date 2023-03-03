@@ -1,13 +1,8 @@
-
-from vimo_dataset import Vimeo
 from main_net import Main_net
-from torch.utils.data import DataLoader
 import torch
-import torch.nn as nn
 from loss_f import LapLoss
-import argparse
-from atd12k import ATD12k, get_loader
-import myutils
+from atd12k import get_loader
+from softcode import myutils
 
 data_dir = '/home/jiaming/atd12k_points'
 
