@@ -3,11 +3,14 @@ import torch
 from loss_f import LapLoss
 from atd12k import get_loader
 import myutils
+import torchvision.transforms as T
+import os
 
 data_dir = '/home/jiaming/atd12k_points'
 
 train_loader = get_loader('train', data_dir, 6, shuffle=True, num_workers=1)
 test_loader = get_loader('test', data_dir, 4, shuffle=False, num_workers=1)
+transform = T.ToPILImage()
 
 # class LaplacianPyramid(nn.Module):
 #     def __init__(self, max_level=5):
@@ -76,7 +79,6 @@ def train():
         print('epoch:  '+str(step)+'    avg loss   :'+str(total_loss.item()/len(train_loader)))
         if (step+1)%2==0:
             test(step)
-            torch.save(model,'./weights/'+'model_weight_'+str(step+1)+'.pth')
 
 
 def test(step):
@@ -93,7 +95,6 @@ def test(step):
     model.eval()
     criteration.eval()
     psnrs, ssims = myutils.init_meters()
-    torch.save(model, './weights/' + 'model_weight_' + str(step + 1) + '.pth')
 
     with torch.no_grad():
         for ix, data in enumerate(test_loader):
@@ -106,6 +107,10 @@ def test(step):
             # loss = torch.nn.functional.l1_loss(img_out,tar)
             loss = criteration(img_out, tar)
             myutils.eval_metrics(img_out, tar, psnrs, ssims)
+            for i in range(tar.size()[0]):
+                pp = transform(img_out[i])
+                os.makedirs('/home/jiaming/softmax' + '/{}'.format(dir[i]), exist_ok=True)
+                pp.save('/home/jiaming/softmax' + '/{}/softmax.png'.format(dir[i]))
 
             if ix % 500 == 0:
                 print('data idx:' + ' lr  :' + str(lr) + '  epoch:  ' + str(ix) + '  /  ' + str(len(test_loader)))
